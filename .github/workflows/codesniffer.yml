@@ -1,0 +1,20 @@
+name: Magento ECG Coding Standard Docker container build
+on:
+  push:
+    branches:
+    - ci
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Build the Docker image
+      run: docker build codesniffer -t michielgerritsen/magento-ecg-coding-standard
+
+    - name: Docker hub login
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Push the image to Docker hub
+      run: docker push michielgerritsen/magento-ecg-coding-standard
