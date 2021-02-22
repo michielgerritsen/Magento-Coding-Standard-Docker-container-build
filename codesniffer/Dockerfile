@@ -12,8 +12,8 @@ RUN docker-php-ext-install zip \
     && docker-php-ext-install pcntl \
     && docker-php-ext-install bcmath
 
-RUN composer create-project magento/magento-coding-standard --stability=dev magento-coding-standard && \
-    magento-coding-standard/vendor/bin/phpcs --config-set installed_paths /app/magento-coding-standard
+RUN composer require magento/magento-coding-standard -n && \
+    vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard/
 
-ENTRYPOINT ["magento-coding-standard/vendor/bin/phpcs", "--standard=Magento2", "/app/data", "-p"]
+ENTRYPOINT ["vendor/bin/phpcs", "--standard=Magento2", "/app/data", "-p"]
 CMD ["--severity=6"]
