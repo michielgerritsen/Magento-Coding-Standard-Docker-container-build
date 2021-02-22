@@ -1,4 +1,4 @@
-FROM composer:latest
+FROM composer:1.10
 
 RUN composer create-project magento/magento-coding-standard --stability=dev magento-coding-standard && \
     magento-coding-standard/vendor/bin/phpcs --config-set installed_paths /app/magento-coding-standard
