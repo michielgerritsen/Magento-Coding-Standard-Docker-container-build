@@ -1,7 +1,10 @@
 FROM composer:latest
 
-RUN composer create-project magento/magento-coding-standard --stability=dev magento-coding-standard && \
-    magento-coding-standard/vendor/bin/phpcs --config-set installed_paths /app/magento-coding-standard
+COPY composer.json composer.json
 
-ENTRYPOINT ["magento-coding-standard/vendor/bin/phpcs", "--standard=Magento2", "/app/data", "-p"]
+RUN composer install && \
+    vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard,vendor/phpcompatibility/php-compatibility && \
+    vendor/bin/phpcs -i
+
+ENTRYPOINT ["vendor/bin/phpcs", "--standard=Magento2", "/app/data", "-p"]
 CMD ["--severity=6"]
