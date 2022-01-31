@@ -12,5 +12,5 @@ RUN /usr/local/bin/composer install && \
     mkdir -p /app/workdir && \
     ln -s /app/data /app/workdir
 
-ENTRYPOINT ["vendor/bin/phpcs", "--standard=Magento2", "/app/workdir", "-p"]
+ENTRYPOINT ["vendor/bin/phpcs", "--standard=Magento2", "--extensions=php,phtml", "--ignore-annotations", "-p", "/app/workdir"]
 CMD ["--severity=6"]
