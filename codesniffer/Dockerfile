@@ -1,8 +1,12 @@
-FROM composer:latest
+FROM php:7.4-fpm-alpine
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+RUN apk add --no-cache libzip-dev zip && \
+    docker-php-ext-install zip
 
 COPY composer.json composer.json
 
-RUN composer install && \
+RUN /usr/local/bin/composer install && \
     vendor/bin/phpcs --config-set installed_paths vendor/magento/magento-coding-standard,vendor/phpcompatibility/php-compatibility && \
     vendor/bin/phpcs -i && \
     mkdir -p /app/workdir && \
