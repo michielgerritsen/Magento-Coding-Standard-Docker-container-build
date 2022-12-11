@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - build
+    - master
 
   schedule:
     - cron: '0 0 * * 1'
