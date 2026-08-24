@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<ruleset name="Fixture">
+    <rule ref="Magento2"/>
+</ruleset>

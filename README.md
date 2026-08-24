@@ -7,7 +7,7 @@ This repository is created to put the Magento Code Sniffer Coding Standard in a 
 You can use it using the `docker run` command:
 
 ```
-docker run --rm --volume $(pwd)/:/app/data michielgerritsen/magento-coding-standard:latest --severity=10
+docker run --rm --volume $(pwd)/:/app/data michielgerritsen/magento-coding-standard:latest --standard=Magento2 --severity=10
 ```
 
 Let's go over this:
