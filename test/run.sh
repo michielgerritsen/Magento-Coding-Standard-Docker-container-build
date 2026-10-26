@@ -49,7 +49,8 @@ for MOUNT in /app/data /app/workdir; do
 done
 
 echo "==> The pcntl extension is available for parallel runs"
-docker run --rm --entrypoint php "${IMAGE}" -m | grep -q "^pcntl$"
+MODULES=$(docker run --rm --entrypoint php "${IMAGE}" -m)
+echo "${MODULES}" | grep -q "^pcntl$"
 assert_violations --volume "${FIXTURES}/invalid:/app/data" "${IMAGE}" --parallel=2
 
 echo "==> Annotations are ignored by default"
