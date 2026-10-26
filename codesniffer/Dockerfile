@@ -13,15 +13,20 @@ RUN for attempt in 1 2 3; do \
         fi; \
     done && \
     find vendor -type d -name .git -prune -exec rm -rf {} + && \
-    composer show magento/magento-coding-standard
+    composer outdated --direct --strict --ignore-platform-reqs magento/magento-coding-standard
 
-FROM php:8.3-cli-alpine
+FROM php:8.4-cli-alpine
 WORKDIR /app
+
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS && \
+    docker-php-ext-install pcntl && \
+    apk del .build-deps
+
 COPY --from=vendor /app/vendor vendor
+COPY entrypoint.sh /usr/local/bin/phpcs-entrypoint
 
 RUN vendor/bin/phpcs -i && \
-    mkdir -p /app/workdir && \
-    ln -s /app/data /app/workdir/data
+    mkdir -p /app/workdir
 
-ENTRYPOINT ["/app/vendor/bin/phpcs", "--ignore-annotations", "--extensions=php,phtml", "-p", "/app/workdir"]
+ENTRYPOINT ["/usr/local/bin/phpcs-entrypoint"]
 CMD ["--standard=Magento2", "--severity=6"]

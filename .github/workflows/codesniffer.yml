@@ -32,6 +32,21 @@ jobs:
     - name: Test the image
       run: ./test/run.sh michielgerritsen/magento-coding-standard:test
 
+    - name: Build the arm64 test image
+      uses: docker/build-push-action@v6
+      with:
+        context: codesniffer
+        platforms: linux/arm64
+        load: true
+        build-args: |
+          CACHEBUST=${{ github.run_id }}
+        tags: michielgerritsen/magento-coding-standard:test-arm64
+
+    - name: Test the arm64 image
+      env:
+        DOCKER_DEFAULT_PLATFORM: linux/arm64
+      run: ./test/run.sh michielgerritsen/magento-coding-standard:test-arm64
+
     - name: Docker hub login
       if: github.ref == 'refs/heads/master'
       uses: docker/login-action@v3
